@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 
 const artworkApi = axios.create({
   baseURL:
-  
     "https://exhibition-curator-be-git-main-mikael-vs-projects.vercel.app/api",
 });
 
@@ -42,6 +41,10 @@ export function Artworks() {
     return <div>Loading artworks...</div>;
   }
 
+  artworks.map((artwork) => {
+    console.log(artwork);
+  });
+
   return (
     <>
       <ul id="all-artworks">
@@ -51,11 +54,12 @@ export function Artworks() {
             key={artwork.id || artwork.systemNumber}
           >
             <li key={artwork.id || artwork.systemNumber}>
-              <h2>{artwork.title || "Untitled"}</h2>
+              <h2>{artwork.title || artwork._primaryTitle || "Untitled"}</h2>
               <h3>
                 {artwork.creators?.[0]?.description ||
                   artwork._primaryMaker?.name ||
                   artwork.artist ||
+                  artwork.records?.artistMakerOrganisations?.[0].name?.text ||
                   "Unknown"}
               </h3>
               <img
@@ -91,7 +95,6 @@ export function Artworks() {
           {currentPage}
         </button>
 
-        {/* Next Button */}
         <button
           className={`px-4 py-2 border rounded ${
             currentPage === totalPages
