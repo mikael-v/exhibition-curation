@@ -13,8 +13,8 @@ function App() {
       <Header />
       <BrowserRouter>
         <Routes>
-          <Route path="/api/artwork" element={<Artworks />} />
-          <Route path="/api/artworks" element={<Artworks />} />
+          <Route path="/artwork" element={<Artworks />} />
+          <Route path="/artworks" element={<Artworks />} />
           <Route path="/" element={<Artworks />} />
         </Routes>
       </BrowserRouter>

@@ -9,10 +9,23 @@ export function Artworks() {
   const [artworks, setArtworks] = useState([]);
   useEffect(() => {
     artworkApi.get("/artwork").then((result) => {
-      console.log(result.data, " <<result data");
-      //   setArtworks(result.data.articles);
+      setArtworks(result.data.records);
     });
   }, []);
 
-  return <></>;
+
+
+  return (
+    <>
+      <ul id="all-artworks">
+        {artworks.map((artwork) => (
+          <li key={artwork.id || artwork.systemNumber}>
+            <h2>{artwork.title}</h2>
+            <h3>{artwork.creators?.[0].description || "author"} </h3>
+            <img src={`${artwork.images?.web.url}`} alt="artwork image" />
+          </li>
+        ))}
+      </ul>
+    </>
+  );
 }
