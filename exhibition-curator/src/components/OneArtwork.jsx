@@ -18,6 +18,7 @@ export function OneArtwork() {
     artworkApi
       .get(`/artwork/${artwork_id}`)
       .then((result) => {
+        console.log(">>RES", result, "<<RES");
         setIsLoading(false);
         setArtwork(result.data);
       })
@@ -27,10 +28,6 @@ export function OneArtwork() {
       });
   }, [artwork_id]);
 
-  console.log("ID:", artwork_id);
-
-  console.log("artwork >>", artwork, "<< artwork");
-
   if (isLoading) {
     return (
       <>
@@ -38,7 +35,6 @@ export function OneArtwork() {
       </>
     );
   }
-  console.log(artwork);
 
   return (
     <>
@@ -50,9 +46,15 @@ export function OneArtwork() {
           artwork.artist ||
           "Unknown"}
       </h3>
-      <img src={artwork.images?.web?.url || artwork.img_url} alt="" srcset="" />
-      <p>Techniques: {artwork.technique}</p>
-      <p>Medium: {artwork.medium}</p>
+      <p>
+        Techniques: {artwork.techniques?.map((m) => m.text).join(", ") || "N/A"}
+      </p>
+      <p>Mediums: {artwork.medium?.map((m) => m.text).join(", ") || "N/A"}</p>
+      <p>
+        Categories: {artwork.categories?.map((m) => m.text).join(", ") || "N/A"}
+      </p>
+      <img src={artwork.images?.web?.url || artwork.img_url} alt="" />
+      <p>{artwork.summary}</p>
     </>
   );
 }

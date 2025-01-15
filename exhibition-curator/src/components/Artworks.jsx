@@ -41,10 +41,6 @@ export function Artworks() {
     return <div>Loading artworks...</div>;
   }
 
-  artworks.map((artwork) => {
-    console.log(artwork);
-  });
-
   return (
     <>
       <ul id="all-artworks">
@@ -66,6 +62,7 @@ export function Artworks() {
                 src={
                   artwork.images?.web?.url ||
                   artwork.img_url ||
+                  artwork._images._primary_thumbnail ||
                   "placeholder.jpg"
                 }
                 alt="artwork image"
