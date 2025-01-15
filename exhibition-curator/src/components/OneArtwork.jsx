@@ -50,9 +50,6 @@ export function OneArtwork() {
         Techniques: {artwork.techniques?.map((m) => m.text).join(", ") || "N/A"}
       </p>
       <p>Mediums: {artwork.medium?.map((m) => m.text).join(", ") || "N/A"}</p>
-      <p>
-        Categories: {artwork.categories?.map((m) => m.text).join(", ") || "N/A"}
-      </p>
       <img src={artwork.images?.web?.url || artwork.img_url} alt="" />
       <p>{artwork.summary}</p>
     </>
