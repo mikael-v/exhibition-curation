@@ -12,13 +12,16 @@ export function Artworks() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
+  const [sortBy, setSortBy] = useState("title");
   const artworksPerPage = 10;
 
   useEffect(() => {
     console.log(`Fetching data for page: ${currentPage}`);
 
     artworkApi
-      .get(`/artwork?page=${currentPage}&limit=${artworksPerPage}`)
+      .get(
+        `/artwork?page=${currentPage}&limit=${artworksPerPage}&sortBy=${sortBy}`
+      )
       .then((result) => {
         console.log("API response:", result.data);
 
@@ -30,11 +33,15 @@ export function Artworks() {
         console.error("Error fetching artworks:", error);
         setLoading(false);
       });
-  }, [currentPage]);
+  }, [currentPage, sortBy]);
 
   const paginate = (pageNumber) => {
     console.log("Changing to page:", pageNumber);
     setCurrentPage(pageNumber);
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
   };
 
   if (loading) {
@@ -43,6 +50,16 @@ export function Artworks() {
 
   return (
     <>
+      <div className="flex justify-end mb-4">
+        <select
+          value={sortBy}
+          onChange={handleSortChange}
+          className="px-4 py-2 border rounded"
+        >
+          <option value="title">Sort by Title</option>
+          <option value="artist">Sort by Artist</option>
+        </select>
+      </div>
       <ul id="all-artworks">
         {artworks.map((artwork) => (
           <Link
