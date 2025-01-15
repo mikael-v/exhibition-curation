@@ -13,6 +13,7 @@ export function Artworks() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [sortBy, setSortBy] = useState("title");
+  const [searchQuery, setSearchQuery] = useState("");
   const artworksPerPage = 10;
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export function Artworks() {
 
     artworkApi
       .get(
-        `/artwork?page=${currentPage}&limit=${artworksPerPage}&sortBy=${sortBy}`
+        `/artwork?search=${searchQuery}&page=${currentPage}&limit=${artworksPerPage}&sortBy=${sortBy}`
       )
       .then((result) => {
         console.log("API response:", result.data);
@@ -33,7 +34,7 @@ export function Artworks() {
         console.error("Error fetching artworks:", error);
         setLoading(false);
       });
-  }, [currentPage, sortBy]);
+  }, [currentPage, sortBy, searchQuery]);
 
   const paginate = (pageNumber) => {
     console.log("Changing to page:", pageNumber);
@@ -44,6 +45,10 @@ export function Artworks() {
     setSortBy(event.target.value);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   if (loading) {
     return <div>Loading artworks...</div>;
   }
@@ -51,6 +56,13 @@ export function Artworks() {
   return (
     <>
       <div className="flex justify-end mb-4">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search by title or artist"
+          className="px-4 py-2 border rounded"
+        />
         <select
           value={sortBy}
           onChange={handleSortChange}
