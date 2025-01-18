@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const artworkApi = axios.create({
   baseURL:
@@ -29,39 +29,53 @@ export function OneArtwork() {
 
   if (isLoading) {
     return (
-      <>
-        <h3>Loading Page...</h3>
-      </>
+      <div className="flex justify-center items-center min-h-screen ">
+        <h3 className="text-xl text-white-700">Loading Page...</h3>
+      </div>
     );
   }
 
   return (
-    <>
-      <h2>{artwork.title || "Untitled"}</h2>
-      <h3>
-        By:{" "}
-        {artwork.creators?.[0]?.description ||
-          artwork._primaryMaker?.name ||
-          artwork.artist ||
-          "Unknown"}
-      </h3>
-      <p>
-        Techniques:{" "}
-        {Array.isArray(artwork.techniques)
-          ? artwork.techniques.map((m) => m.text).join(", ")
-          : artwork.techniques || "N/A"}
-      </p>
-      <p>
-        Mediums:{" "}
-        {Array.isArray(artwork.medium)
-          ? artwork.medium
-              .map((m) => (typeof m === "object" && m.text ? m.text : m)) 
-              .join(", ")
-          : artwork.medium || "N/A"}
-      </p>
+    <div className="flex flex-col px-4 py-4 bg-black border rounded  h-contain ">
+      <div className="mb-4">
+        <h2 className="text-3xl font-semibold text-gray-300  dark:text-gray-100 ">
+          {artwork.title || "Untitled"}
+        </h2>
+        <h3 className="text-lg text-gray-300 dark:text-gray-400 mb-6">
+          By:{" "}
+          {artwork.creators?.[0]?.description ||
+            artwork._primaryMaker?.name ||
+            artwork.artist ||
+            "Unknown"}
+        </h3>
+      </div>
 
-      <img src={artwork.images?.web?.url || artwork.img_url} alt="" />
-      <p>{artwork.summary}</p>
-    </>
+      <div className="flex">
+        <div className="flex flex-wrap justify-between items-center">
+          <img
+            src={artwork.images?.web?.url || artwork.img_url}
+            alt=""
+            className="w-1/3 h-auto rounded-lg shadow-md object-contain"
+          />
+          <div className="w-2/3 pl-6">
+            <p className=" mt-2text-gray-300 dark:text-gray-300">
+              <span className="font-semibold">Techniques: </span>
+              {Array.isArray(artwork.techniques)
+                ? artwork.techniques.map((m) => m.text).join(", ")
+                : artwork.techniques || "N/A"}
+            </p>
+            <p className="text-gray-300 dark:text-gray-300">
+              <span className="font-semibold">Mediums: </span>
+              {Array.isArray(artwork.medium)
+                ? artwork.medium
+                    .map((m) => (typeof m === "object" && m.text ? m.text : m))
+                    .join(", ")
+                : artwork.medium || "N/A"}
+            </p>
+            <p className="mt-4 text-gray-200">{artwork.summary}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

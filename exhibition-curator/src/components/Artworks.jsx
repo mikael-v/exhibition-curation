@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 const artworkApi = axios.create({
   baseURL:
@@ -50,56 +51,70 @@ export function Artworks() {
   };
 
   if (loading) {
-    return <div>Loading artworks...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen ">
+        <h3 className="text-xl text-white-700">Loading Page...</h3>
+      </div>
+    );
   }
 
   return (
     <>
-      <div className="flex justify-end mb-4">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          placeholder="Search by title or artist"
-          className="px-4 py-2 border rounded"
-        />
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center space-x-2">
+          <MagnifyingGlassIcon className="w-5 h-5 text-white-600 dark:text-gray-400" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder="Search by title or artist"
+            className="w-1/2 px-4 py-2 w-80  border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          />
+        </div>
         <select
           value={sortBy}
           onChange={handleSortChange}
-          className="px-4 py-2 border rounded"
+          className="px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500  dark:bg-gray-700 dark:text-white dark:border-gray-600"
         >
           <option value="title">Sort by Title</option>
           <option value="artist">Sort by Artist</option>
         </select>
       </div>
-      <ul id="all-artworks">
+
+      <div className="grid grid-cols-2 gap-6">
         {artworks.map((artwork) => (
           <Link
             to={`/artwork/${artwork.id || artwork.systemNumber}`}
             key={artwork.id || artwork.systemNumber}
+            className="block bg-black shadow-md rounded-lg overflow-hidden hover:shadow-lg dark:bg-gray-800 dark:text-white dark:border-gray-700"
           >
-            <li key={artwork.id || artwork.systemNumber}>
-              <h2>{artwork.title || artwork._primaryTitle || "Untitled"}</h2>
-              <h3>
+            <div className="p-4">
+              <h2 className="text-lg font-semibold text-white-800 dark:text-white">
+                {artwork.title || artwork._primaryTitle || "Untitled"}
+              </h2>
+
+              <h3 className="text-sm text-white-600 dark:text-gray-300 mt-1">
                 {artwork.creators?.[0]?.description ||
                   artwork._primaryMaker?.name ||
                   artwork.artist ||
-                  artwork.records?.artistMakerOrganisations?.[0].name?.text ||
+                  artwork.records?.artistMakerOrganisations?.[0]?.name?.text ||
                   "Unknown"}
               </h3>
-              <img
-                src={
-                  artwork.images?.web?.url ||
-                  artwork.img_url ||
-                  artwork._images._primary_thumbnail ||
-                  "placeholder.jpg"
-                }
-                alt="artwork image"
-              />
-            </li>
+            </div>
+
+            <img
+              src={
+                artwork.images?.web?.url ||
+                artwork.img_url ||
+                artwork._images?._primary_thumbnail ||
+                "https://via.placeholder.com/300"
+              }
+              alt={artwork.title || "Artwork"}
+              className="w-full h-64 object-cover mt-2"
+            />
           </Link>
         ))}
-      </ul>
+      </div>
 
       <div className="flex justify-center items-center space-x-4 mt-4">
         <button

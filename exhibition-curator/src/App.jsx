@@ -8,8 +8,8 @@ import { OneArtwork } from "./components/OneArtwork";
 function App() {
   return (
     <>
-      <Header />
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route exact path="/artwork/:artwork_id" element={<OneArtwork />} />
           <Route path="/" element={<Artworks />} />
