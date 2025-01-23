@@ -6,8 +6,8 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Artworks } from "./components/Artworks";
 import { OneArtwork } from "./components/OneArtwork";
-//import { Users } from "./components/UserSelect";
 import { Collections } from "./components/Collections";
+import { OneCollection } from "./components/OneCollection";
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -59,9 +59,18 @@ function App() {
             path="/users/:userId/collections"
             element={
               <>
-                <Header />
+                <Header userId={userId} />
                 <BackToArtButton />
                 <Collections />
+              </>
+            }
+          />
+          <Route
+            path="/users/:userId/collections/:collection"
+            element={
+              <>
+                <Header userId={userId} />
+                <OneCollection userId={userId} />
               </>
             }
           />

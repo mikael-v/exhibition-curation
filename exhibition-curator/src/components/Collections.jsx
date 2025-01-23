@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const artworkApi = axios.create({
   baseURL:
@@ -58,8 +58,9 @@ export function Collections() {
       <ul className="space-y-4">
         {Object.entries(collections).map(([name, artworks]) => (
           <li key={name} className="p-4 border rounded shadow-sm bg-white">
-            
-            <h2 className="text-xl bg-black font-semibold">{name}</h2>
+            <Link to={`/users/${userId}/collections/${name}`} className="block">
+              <h2 className="text-xl bg-black font-semibold">{name}</h2>
+            </Link>
             <p className="text-gray-600">
               {artworks.length} artwork(s) in this collection
             </p>

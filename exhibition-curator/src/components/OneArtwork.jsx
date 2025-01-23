@@ -15,14 +15,12 @@ export function OneArtwork({ userId }) {
   const [collections, setCollections] = useState([]);
   const [selectedCollection, setSelectedCollection] = useState("");
   const [newCollectionName, setNewCollectionName] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
     artworkApi
       .get(`/artwork/${artwork_id}`)
       .then((result) => {
-        // console.log(result);
         setIsLoading(false);
         setArtwork(result.data);
       })
@@ -37,8 +35,6 @@ export function OneArtwork({ userId }) {
       artworkApi
         .get(`/users/${userId}/collections`)
         .then((result) => {
-          console.log("User:", result);
-
           setCollections(result.data.collections || {});
         })
         .catch((error) => {
@@ -50,21 +46,18 @@ export function OneArtwork({ userId }) {
   const handleAddToCollection = () => {
     const artworkId = String(artwork_id);
 
-    if (selectedCollection) {
-      console.log(`Selected collection: ${selectedCollection}`);
-      console.log(`Artwork ID: ${artworkId}`);
+    if (collections[selectedCollection]) {
+      axios
+        .post(
+          `https://exhibition-curator-be-git-main-mikael-vs-projects.vercel.app/api/users/${userId}/collections/${selectedCollection}`,
 
-      artworkApi
-        .post(`/users/${userId}/collections/${selectedCollection}`, {
-          artworkId: artworkId,
-        })
+          { artworkId: artworkId }
+        )
         .then(() => {
-          alert("Artwork added to collection successfully!");
+          console.log("Artwork added to collection successfully!");
         })
         .catch((error) => {
-          alert(
-            error.response?.data?.msg || "Failed to add artwork to collection"
-          );
+          console.error("Failed to add art to collection:", error);
         });
     } else if (newCollectionName) {
       artworkApi
