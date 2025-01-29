@@ -158,17 +158,10 @@ export function OneArtwork({ userId }) {
             You have no collections. Create one below.
           </p>
         )}
-        <input
-          type="text"
-          value={newCollectionName}
-          onChange={(e) => setNewCollectionName(e.target.value)}
-          placeholder="New collection name"
-          className="p-2 mb-4 bg-gray-800 text-white rounded"
-        />
 
         <button
           onClick={handleAddToCollection}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 mx-5 bg-blue-500 text-white rounded hover:bg-blue-600 "
         >
           Add to Collection
         </button>
