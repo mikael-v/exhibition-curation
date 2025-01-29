@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const artworkApi = axios.create({
-  baseURL:
-    "https://exhibition-curator-be-git-main-mikael-vs-projects.vercel.app/api",
+  baseURL: "https://exhibition-curator-be.vercel.app/api",
 });
 
 export function OneArtwork({ userId }) {
@@ -45,11 +44,10 @@ export function OneArtwork({ userId }) {
 
   const handleAddToCollection = () => {
     const artworkId = String(artwork_id);
-
     if (collections[selectedCollection]) {
-      axios
+      artworkApi
         .post(
-          `https://exhibition-curator-be-git-main-mikael-vs-projects.vercel.app/api/users/${userId}/collections/${selectedCollection}`,
+          `/users/${userId}/collections/${selectedCollection}`,
 
           { artworkId: artworkId }
         )

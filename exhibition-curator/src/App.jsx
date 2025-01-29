@@ -94,8 +94,7 @@ function App() {
 
   function Users({ setUserId }) {
     const artworkApi = axios.create({
-      baseURL:
-        "https://exhibition-curator-be-git-main-mikael-vs-projects.vercel.app/api",
+      baseURL: "https://exhibition-curator-be.vercel.app/api",
     });
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -103,7 +102,6 @@ function App() {
 
     useEffect(() => {
       artworkApi.get(`/users`).then((result) => {
-        console.log(result.data.users);
         setUsers(result.data.users);
         setLoading(false);
       });
@@ -128,9 +126,9 @@ function App() {
         <ul className="space-y-2">
           {users.map((user) => (
             <li
-              key={user.id}
+              key={user._id}
               className="cursor-pointer text-lg text-blue-500 hover:underline"
-              onClick={() => handleUserClick(user.id)}
+              onClick={() => handleUserClick(user._id)}
             >
               {user.name}
             </li>

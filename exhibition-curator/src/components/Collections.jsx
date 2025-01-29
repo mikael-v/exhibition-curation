@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 const artworkApi = axios.create({
-  baseURL:
-    "https://exhibition-curator-be-git-main-mikael-vs-projects.vercel.app/api",
+  baseURL: "https://exhibition-curator-be.vercel.app/api",
 });
 
 export function Collections() {
@@ -19,7 +18,7 @@ export function Collections() {
       .get(`/users/${userId}/collections`)
       .then((response) => {
         setCollections(response.data.collections || {});
-        setUserName(response.data.userName);
+        setUserName(response.data.username);
         setLoading(false);
       })
       .catch((err) => {

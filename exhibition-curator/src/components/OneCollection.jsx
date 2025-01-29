@@ -1,14 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const artworkApi = axios.create({
-  baseURL:
-    "https://exhibition-curator-be-git-main-mikael-vs-projects.vercel.app/api",
+  baseURL: "https://exhibition-curator-be.vercel.app/api",
 });
 
-export function OneCollection({ userId }) {
-  const { collectionName } = useParams();
+export function OneCollection() {
+  const { userId, collection } = useParams();
   const [artworks, setArtworks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -20,10 +19,10 @@ export function OneCollection({ userId }) {
 
       try {
         const { data: collectionData } = await artworkApi.get(
-          `/users/${userId}/collections/${collectionName}`
+          `/users/${userId}/collections/${collection}`
         );
 
-        const artworkIds = collectionData.collection || [];
+        const artworkIds = collectionData[collection] || [];
 
         const artworkPromises = artworkIds.map((artworkId) => {
           const normalizedArtworkId = artworkId.startsWith("O")
@@ -43,7 +42,7 @@ export function OneCollection({ userId }) {
       }
     };
     fetchCollectionArtworks();
-  }, [userId, collectionName]);
+  }, [userId, collection]);
 
   if (isLoading) {
     return <p>Loading artworks...</p>;
@@ -58,21 +57,41 @@ export function OneCollection({ userId }) {
   }
 
   return (
-    <div>
-      <h2>Artworks in {collectionName}</h2>
-      <ul>
+    <>
+      <h2 className="text-2xl font-bold mb-4">{collection}</h2>
+      <div className="grid grid-cols-2 gap-6">
         {artworks.map((artwork) => (
-          <li key={artwork.id}>
-            <h3>{artwork.title}</h3>
-            <p>{artwork.description}</p>
+          <Link
+            to={`/artwork/${artwork.id || artwork.systemNumber}`}
+            key={artwork.id || artwork.systemNumber}
+            className="block bg-black shadow-md rounded-lg overflow-hidden hover:shadow-lg dark:bg-gray-800 dark:text-white dark:border-gray-700"
+          >
+            <div className="p-4">
+              <h2 className="text-lg font-semibold text-white-800 dark:text-white">
+                {artwork.title || artwork._primaryTitle || "Untitled"}
+              </h2>
+
+              <h3 className="text-sm text-white-600 dark:text-gray-300 mt-1">
+                {artwork.creators?.[0]?.description ||
+                  artwork._primaryMaker?.name ||
+                  artwork.artist ||
+                  artwork.records?.artistMakerOrganisations?.[0]?.name?.text ||
+                  "Unknown"}
+              </h3>
+            </div>
             <img
-              src={artwork.imageUrl}
-              alt={artwork.title}
-              style={{ maxWidth: "200px" }}
+              src={
+                artwork.images?.web?.url ||
+                artwork.img_url ||
+                artwork._images?._primary_thumbnail ||
+                "https://via.placeholder.com/300"
+              }
+              alt={artwork.title || "Artwork"}
+              className="w-full h-64 object-cover mt-2"
             />
-          </li>
+          </Link>
         ))}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 }

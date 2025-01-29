@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 
 const artworkApi = axios.create({
-  baseURL:
-    "https://exhibition-curator-be-git-main-mikael-vs-projects.vercel.app/api",
+  baseURL: "https://exhibition-curator-be.vercel.app/api",
 });
 
 export function Artworks() {
