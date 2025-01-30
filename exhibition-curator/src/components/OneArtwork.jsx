@@ -96,9 +96,9 @@ export function OneArtwork({ userId }) {
   }
 
   return (
-    <div className="flex flex-col px-4 py-4 bg-black border rounded  h-contain ">
+    <div className="flex flex-col px-4 py-4 bg-black border rounded h-contain">
       <div className="mb-4">
-        <h2 className="text-3xl font-semibold text-gray-300  dark:text-gray-100 ">
+        <h2 className="text-3xl font-semibold text-gray-300 dark:text-gray-100">
           {artwork.title || "Untitled"}
         </h2>
         <h3 className="text-lg text-gray-300 dark:text-gray-400 mb-6">
@@ -110,61 +110,61 @@ export function OneArtwork({ userId }) {
         </h3>
       </div>
 
-      <div className="flex">
-        <div className="flex flex-wrap justify-between items-center">
+      <div className="flex flex-col md:flex-row">
+        <div className="w-full md:w-2/3 order-2 md:order-1 mb-4 md:mb-0">
+          <p className="text-gray-300 dark:text-gray-300">
+            <span className="font-semibold">Techniques: </span>
+            {Array.isArray(artwork.techniques)
+              ? artwork.techniques.map((m) => m.text).join(", ")
+              : artwork.techniques || "N/A"}
+          </p>
+          <p className="text-gray-300 dark:text-gray-300">
+            <span className="font-semibold">Mediums: </span>
+            {Array.isArray(artwork.medium)
+              ? artwork.medium
+                  .map((m) => (typeof m === "object" && m.text ? m.text : m))
+                  .join(", ")
+              : artwork.medium || "N/A"}
+          </p>
+          <p className="mt-4 text-gray-200">{artwork.summary}</p>
+        </div>
+
+        <div className="w-full md:w-1/3 order-1 md:order-2 flex justify-center">
           <img
             src={artwork.images?.web?.url || artwork.img_url}
-            alt=""
-            className="w-1/3 h-auto rounded-lg shadow-md object-contain"
+            alt="Artwork"
+            className="w-full sm:w-3/4 md:w-full h-auto rounded-lg shadow-md object-contain"
           />
-          <div className="w-2/3 pl-6">
-            <p className=" mt-2text-gray-300 dark:text-gray-300">
-              <span className="font-semibold">Techniques: </span>
-              {Array.isArray(artwork.techniques)
-                ? artwork.techniques.map((m) => m.text).join(", ")
-                : artwork.techniques || "N/A"}
-            </p>
-            <p className="text-gray-300 dark:text-gray-300">
-              <span className="font-semibold">Mediums: </span>
-              {Array.isArray(artwork.medium)
-                ? artwork.medium
-                    .map((m) => (typeof m === "object" && m.text ? m.text : m))
-                    .join(", ")
-                : artwork.medium || "N/A"}
-            </p>
-            <p className="mt-4 text-gray-200">{artwork.summary}</p>
-          </div>
         </div>
       </div>
-      <div className="mt-6">
-        <h3 className="text-lg text-gray-300 dark:text-gray-400 mb-4">
-          Add to Collection:
-        </h3>
-        {collections && Object.keys(collections).length > 0 ? (
-          <select
-            value={selectedCollection}
-            onChange={(e) => setSelectedCollection(e.target.value)}
-            className="p-2 mb-4 bg-gray-800 text-white rounded"
-          >
-            <option value="">Select a collection</option>
-            {Object.keys(collections).map((collectionName) => (
-              <option key={collectionName} value={collectionName}>
-                {collectionName}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <p className="text-gray-300 dark:text-gray-400 mb-4">
-            You have no collections. Create one below.
-          </p>
-        )}
 
-        <button
-          onClick={handleAddToCollection}
-          className="px-4 py-2 mx-5 bg-blue-500 text-white rounded hover:bg-blue-600 "
-        >
-          Add to Collection
-        </button>
+      <div className="mt-6">
+        {collections && Object.keys(collections).length > 0 && (
+          <>
+            <h3 className="text-lg text-gray-300 dark:text-gray-400 mb-4">
+              Select Collection To Add:
+            </h3>
+            <select
+              value={selectedCollection}
+              onChange={(e) => setSelectedCollection(e.target.value)}
+              className="p-2 mb-4 md:mb-6 bg-gray-800 text-white rounded"
+            >
+              <option value="">Select a collection</option>
+              {Object.keys(collections).map((collectionName) => (
+                <option key={collectionName} value={collectionName}>
+                  {collectionName}
+                </option>
+              ))}
+            </select>
+
+            <button
+              onClick={handleAddToCollection}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Add to Collection
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

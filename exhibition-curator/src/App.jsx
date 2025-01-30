@@ -79,13 +79,21 @@ function App() {
     </>
   );
 
-  function BackToArtButton() {
+  function BackToArtButton({ userId }) {
     const navigate = useNavigate();
+
+    const handleBackClick = () => {
+      if (userId) {
+        navigate(`/artwork?userId=${userId}`);
+      } else {
+        navigate("/artwork");
+      }
+    };
 
     return (
       <button
-        onClick={() => navigate("/artwork")}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mt-4"
+        onClick={handleBackClick}
+        className="px-4 py-2 m-10 bg-blue-500 text-white rounded hover:bg-blue-600 mt-4"
       >
         Back to Art
       </button>
@@ -123,17 +131,17 @@ function App() {
     return (
       <div className="flex flex-col items-center">
         <h1 className="text-2xl font-bold mb-4">Select a User</h1>
-        <ul className="space-y-2">
+        <div className="flex flex-wrap gap-2">
           {users.map((user) => (
-            <li
+            <span
               key={user._id}
-              className="cursor-pointer text-lg text-blue-500 hover:underline"
               onClick={() => handleUserClick(user._id)}
+              className="cursor-pointer inline-flex items-center rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 hover:bg-blue-200 transition"
             >
               {user.name}
-            </li>
+            </span>
           ))}
-        </ul>
+        </div>
       </div>
     );
   }

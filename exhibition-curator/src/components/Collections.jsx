@@ -53,7 +53,7 @@ export function Collections() {
 
   return (
     <div className="container mx-auto px-6">
-      <h1 className="text-3xl font-bold mb-4">{userName}'s Collections</h1>
+      <h1 className="text-3xl font-bold mb-4 my-4">{userName}'s Collections</h1>
       <ul className="space-y-4">
         {Object.entries(collections).map(([name, artworks]) => (
           <li key={name} className="p-4 border rounded shadow-sm bg-white">

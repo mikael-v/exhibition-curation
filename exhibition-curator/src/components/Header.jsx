@@ -8,24 +8,24 @@ export function Header({ userId, hideCollectionsButton }) {
       <div className="container mx-auto px-6 text-center">
         {userId ? (
           <Link to="/artwork">
-            <h1 className="text-3xl font-bold tracking-wide">
+            <h1 className="text-3xl font-bold tracking-wide mb-10">
               Exhibition Curation
             </h1>
           </Link>
         ) : (
-          <h1 className="text-3xl font-bold tracking-wide">
+          <h1 className="text-3xl font-bold tracking-wide mb-10">
             Exhibition Curation
           </h1>
         )}
-        {!hideCollectionsButton && userId && (
-          <button
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            onClick={() => navigate(`/users/${userId}/collections`)}
-          >
-            View Collections
-          </button>
-        )}
       </div>
+      {!hideCollectionsButton && userId && (
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          onClick={() => navigate(`/users/${userId}/collections`)}
+        >
+          View Collections
+        </button>
+      )}
     </header>
   );
 }
